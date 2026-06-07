@@ -1,0 +1,5 @@
+3 ways:
+```````
+1. type > file1.txt ---> creates empty file
+2. notepad file2.txt  ---> creates file with some content & it opens in notepad to write something.
+3. echo "Hello" > file3.txt  ---> creates a file with content.
