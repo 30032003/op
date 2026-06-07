@@ -1,0 +1,4 @@
+mysql -u root -p
+create user 'harshal'@'localhost' identified by 'Pass123';
+grant all privileges on *.* to 'harshal'@'localhost';
+flush privileges;
