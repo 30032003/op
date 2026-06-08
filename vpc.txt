@@ -1,0 +1,105 @@
+```````````````````````````````````````````````````````
+
+IN WINDOWS:
+```````````
+
+VPC:(aws)
+`````````
+search vpc
+create vpc
+vpc setting: vpc and more
+name:my-ditiss
+ipv4 CIDR block: 172.20.0.0/16
+number of availability zone: 1
+number of public subnet: 1
+number of private subnet: 1
+customize subnet CIDR block:
+public subnet CIDR block:172.20.0.0/17
+private subnet CIDR block:172.20.128.0/17
+Nat gateway: zonal-> IN 1 AZ
+create vpc
+view vpc
+
+Create ec2 instances: (public and private)
+``````````````````````````````````````````
+for public instance:
+````````````````````
+search ec2 instance
+create ec2
+launch ec2
+name:my-ec2-public-instance
+create key-pair: (.ppk)
+network setting edit:
+subnet: vpc-public
+auto assign ip: enable
+launch instance
+
+for private instance:
+``````````````````````
+launch ec2
+name:my-ec2-private-instance
+create key-pair: (use same key pair created for public instance)
+network setting edit:
+subnet: vpc-private
+auto assign ip: disable
+launch instance
+
+IN WINDOWS:
+```````````
+Convert .ppk to .pem: (using puttygen)
+`````````````````````````````````````
+load key-pair
+select coversion : export to openssh
+same with .pem
+
+Send that .pem file from windows to vmware:
+```````````````````````````````````````````
+drag and drop to ubuntu
+(go to that folder where .pem is located)
+
+
+IN UBUNTU:
+``````````
+
+chmod 400 <file.pem>
+ssh -i <file.pem> ec2-user@<public ip of public instance>
+
+
+IN WINDOWS:
+``````````
+open WinSCP
+host ip: <public instance public ip>
+username: ec2-user
+password: advance->auth->browser .ppk -> login
+then transfer .pem file from windows to ec2-user of ubuntu
+
+IN UBUNTU:
+``````````
+chmod 400 <file.pem>
+ssh -i <file.pem> ec2-user@<private instance private ip>
+sudo yum install httpd -y
+sudo service httpd start
+sudo chkconfig httpd on curl localhost
+curl<private instance private ip>
+
+IN WINDOWS:
+```````````
+open putty
+hostname: public instance public ip
+ssh->auth->credential-> file.ppk-> login
+login as: ec2-user
+curl<private instance private ip>
+
+GO to private ec2 instance -> security -> securitygroups -> inboundrule (edit inbound rule) -> add rule 
+
+select : http 
+source : anywhere ip-v4
+save rule
+
+go back to putty:
+curl<private instance private ip>
+
+delete vpc
+delete nat gateway
+delete instance
+release elastic ip
