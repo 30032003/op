@@ -1,0 +1,22 @@
+PG-DITISS Coding Practice Questions (Short List)
+
+1.  Enhanced Port Scanner
+2.  Log Analyzer
+3.  Brute-force Detection Script
+4.  DNS Resolver Tool
+5.  Password Strength + Hash Storage
+6.  Active Connections Monitor
+7.  Disk Usage Alert Script
+8.  Service Health Monitor
+9.  Failed Login Alert
+10. Cron Job Verifier
+11. File Integrity Checker
+12. Simple Firewall Rule Generator
+13. Network Interface Analyzer
+14. Input Sanitization Tool
+15. Simple Encryption Tool
+16. URL Status Checker
+17. Advanced Email + IP + URL Extractor
+18. Ping Sweep Tool
+19. Process + Port Mapping
+20. Automated Backup Script
