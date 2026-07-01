@@ -1,0 +1,229 @@
+PG-DITISS Coding Practice Guide - Solutions (Questions 1-20)
+
+======================== Q1. Enhanced Port Scanner
+========================
+
+    import socket
+
+    host = input("Enter Hostname/IP: ")
+
+    print(f"\nScanning {host}...\n")
+
+    for port in range(1, 1025):
+        try:
+            s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            s.settimeout(0.5)
+            result = s.connect_ex((host, port))
+            if result == 0:
+                try:
+                    service = socket.getservbyport(port)
+                except:
+                    service = "Unknown"
+                print(f"Port {port} OPEN ({service})")
+            s.close()
+        except KeyboardInterrupt:
+            print("Scan Interrupted")
+            break
+        except socket.gaierror:
+            print("Hostname could not be resolved.")
+            break
+
+======================== Q2. Log Analyzer ========================
+
+    from collections import Counter
+
+    filename = input("Enter log file path: ")
+    total = 0
+    errors404 = 0
+    ips = Counter()
+
+    with open(filename) as file:
+        for line in file:
+            total += 1
+            ip = line.split()[0]
+            ips[ip] += 1
+            if " 404 " in line:
+                errors404 += 1
+
+    print(total)
+    print(errors404)
+    print(ips.most_common(3))
+
+======================== Q3. Brute Force Detection
+========================
+
+    from collections import Counter
+    import re
+
+    failed = Counter()
+
+    with open("/var/log/auth.log") as file:
+        for line in file:
+            if "Failed password" in line:
+                m = re.search(r'from (\d+\.\d+\.\d+\.\d+)', line)
+                if m:
+                    failed[m.group(1)] += 1
+
+    for ip, c in failed.items():
+        if c > 5:
+            print(ip, c)
+
+======================== Q4. DNS Resolver ========================
+
+    import socket
+
+    domain = input("Domain: ")
+    ip = socket.gethostbyname(domain)
+    print(ip)
+    try:
+        print(socket.gethostbyaddr(ip)[0])
+    except:
+        print("Reverse DNS not available")
+
+======================== Q5. Password Hash ========================
+
+    import hashlib, re
+
+    pwd = input("Password: ")
+
+    if len(pwd)>=8 and re.search(r"[A-Z]",pwd) and re.search(r"[a-z]",pwd) and re.search(r"\d",pwd):
+        h = hashlib.sha256(pwd.encode()).hexdigest()
+        print(h)
+        login = input("Login Password: ")
+        if hashlib.sha256(login.encode()).hexdigest()==h:
+            print("Login Successful")
+
+======================== Q6. Active Connections ========================
+
+    netstat -ant | grep ESTABLISHED | awk '{print $5}' | cut -d: -f1 | sort | uniq -c | sort -nr
+
+======================== Q7. Disk Usage Alert ========================
+
+    #!/bin/bash
+    LOGFILE="/var/log/disk_alert.log"
+    df -h | tail -n +2 | while read line
+    do
+    usage=$(echo $line|awk '{print $5}'|tr -d '%')
+    part=$(echo $line|awk '{print $6}')
+    if [ "$usage" -gt 80 ]; then
+    echo "$(date): WARNING $part ${usage}%" >> $LOGFILE
+    fi
+    done
+
+======================== Q8. Service Health Monitor
+========================
+
+    #!/bin/bash
+    for s in ssh nginx mysql
+    do
+    systemctl is-active --quiet $s || systemctl restart $s
+    done
+
+======================== Q9. Failed Login Alert ========================
+
+    grep "Failed password" /var/log/auth.log | tail -10
+
+======================== Q10. Cron Verifier ========================
+
+    read -p "Keyword: " k
+    crontab -l
+    crontab -l | grep -q "$k" && echo Found || echo Not\ Found
+
+======================== Q11. File Integrity Checker
+========================
+
+    import os, hashlib, json
+    DB="hashes.json"
+    def h(f):
+     x=hashlib.sha256()
+     with open(f,"rb") as fp:
+      while True:
+       b=fp.read(4096)
+       if not b: break
+       x.update(b)
+     return x.hexdigest()
+
+======================== Q12. Firewall Rule Generator
+========================
+
+    ports=input().split(",")
+    for p in ports:
+     print(f"iptables -A INPUT -p tcp --dport {p.strip()} -j ACCEPT")
+    print("iptables -A INPUT -j DROP")
+
+======================== Q13. Network Interface Analyzer
+========================
+
+    import psutil,socket
+    for i,a in psutil.net_if_addrs().items():
+     print(i)
+     for x in a:
+      if x.family==socket.AF_INET: print(x.address)
+
+======================== Q14. SQL Injection Detector
+========================
+
+    import re
+    t=input()
+    if re.search(r"or\s+\d+=\d+|union\s+select|drop\s+table|--",t,re.I):
+     print("Potential Injection Detected")
+    else:
+     print("Safe")
+
+======================== Q15. Caesar Cipher ========================
+
+    def enc(t,s):
+     r=""
+     for c in t:
+      if c.isalpha():
+       b=65 if c.isupper() else 97
+       r+=chr((ord(c)-b+s)%26+b)
+      else:r+=c
+     return r
+    m=input();sh=int(input())
+    e=enc(m,sh)
+    print(e)
+    print(enc(e,-sh))
+
+======================== Q16. URL Status Checker
+========================
+
+    import requests,time
+    for u in input().split(","):
+     s=time.time()
+     try:
+      r=requests.get(u.strip(),timeout=5)
+      print(r.status_code,time.time()-s)
+     except:
+      print("Unreachable")
+
+======================== Q17. Email/IP/URL Extractor
+========================
+
+    import re
+    t=input()
+    print(re.findall(r'[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}',t))
+    print(re.findall(r'\b(?:\d{1,3}\.){3}\d{1,3}\b',t))
+    print(re.findall(r'https?://[^\s]+',t))
+
+======================== Q18. Ping Sweep ========================
+
+    import ipaddress,subprocess,platform
+    net=input()
+    p="-n" if platform.system().lower()=="windows" else "-c"
+    for h in ipaddress.IPv4Network(net,strict=False):
+     if subprocess.run(["ping",p,"1",str(h)],stdout=subprocess.DEVNULL).returncode==0:
+      print(h)
+
+======================== Q19. Process-Port Mapping
+========================
+
+    sudo netstat -tulpn | grep LISTEN
+
+======================== Q20. Automated Backup ========================
+
+    #!/bin/bash
+    mkdir -p /backup
+    tar -czf /backup/backup_$(date +%Y%m%d_%H%M%S).tar.gz /home/$USER/Documents
+    cd /backup
+    ls -tp | grep -v '/$' | tail -n +6 | xargs -r rm --
