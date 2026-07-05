@@ -1,0 +1,155 @@
+SNORT LAB - STEP BY STEP COMMANDS AND NOTES
+
+==================================================== LAB REQUIREMENTS
+==================================================== Attacker Machine :
+Kali Linux IDS Machine : Ubuntu/CentOS with Snort (Optional) Victim:
+Metasploitable2
+
+==================================================== STEP 1: UPDATE
+SYSTEM ==================================================== sudo apt
+update sudo apt upgrade -y
+
+==================================================== STEP 2: INSTALL
+SNORT ==================================================== sudo apt
+install snort -y
+
+Check installation: snort -V
+
+Purpose: Displays the installed Snort version.
+
+==================================================== STEP 3: IDENTIFY
+NETWORK INTERFACE ====================================================
+ip a
+
+OR
+
+ifconfig
+
+Example interface: eth0 ens33
+
+==================================================== STEP 4: VERIFY
+SNORT CONFIGURATION ====================================================
+sudo snort -T -c /etc/snort/snort.conf
+
+Purpose: Checks the configuration file for syntax errors.
+
+Expected: Snort successfully validated the configuration.
+
+==================================================== STEP 5: RUN SNORT
+IN IDS MODE ==================================================== sudo
+snort -A console -q -c /etc/snort/snort.conf -i eth0
+
+Explanation: -A console : Print alerts on terminal -q : Quiet mode -c :
+Configuration file -i : Network interface
+
+==================================================== STEP 6: CAPTURE
+LIVE TRAFFIC ====================================================
+Generate traffic from another machine.
+
+Examples: ping
+
+OR
+
+nmap -sS
+
+Observe alerts on the Snort console.
+
+==================================================== STEP 7: CREATE
+CUSTOM RULE ==================================================== Open
+local rules file:
+
+sudo nano /etc/snort/rules/local.rules
+
+Add rule:
+
+alert icmp any any -> any any (msg:“ICMP Ping Detected”; sid:1000001;
+rev:1;)
+
+Save: Ctrl+O Enter Ctrl+X
+
+==================================================== STEP 8: VERIFY RULE
+==================================================== sudo snort -T -c
+/etc/snort/snort.conf
+
+If successful: Snort successfully validated the configuration.
+
+==================================================== STEP 9: RESTART
+SNORT ==================================================== sudo
+systemctl restart snort
+
+OR
+
+Run manually:
+
+sudo snort -A console -q -c /etc/snort/snort.conf -i eth0
+
+==================================================== STEP 10: TEST
+CUSTOM RULE ==================================================== From
+Kali:
+
+ping
+
+Expected Output:
+
+[**] ICMP Ping Detected [**]
+
+==================================================== STEP 11: LOG FILES
+==================================================== Alerts:
+
+/var/log/snort/
+
+View logs:
+
+sudo ls /var/log/snort
+
+OR
+
+sudo cat /var/log/snort/alert
+
+==================================================== IMPORTANT COMMANDS
+==================================================== sudo apt update
+sudo apt install snort snort -V ip a ifconfig sudo snort -T -c
+/etc/snort/snort.conf sudo nano /etc/snort/rules/local.rules sudo
+systemctl restart snort sudo snort -A console -q -c
+/etc/snort/snort.conf -i eth0 ping nmap -sS
+
+==================================================== COMMON ERRORS
+==================================================== Problem: Wrong
+interface
+
+Solution: Check interface using: ip a
+
+------------------------------------------------------------------------
+
+Problem: Configuration error
+
+Solution: Run: sudo snort -T -c /etc/snort/snort.conf
+
+------------------------------------------------------------------------
+
+Problem: No alerts generated
+
+Solution: Check: 1. Rule syntax 2. Correct interface 3. Traffic is
+reaching the machine
+
+==================================================== VIVA QUESTIONS
+==================================================== 1. What is Snort?
+An open-source Network Intrusion Detection and Prevention System
+(IDS/IPS).
+
+2.  What is IDS? A system that monitors network traffic and generates
+    alerts for suspicious activity.
+
+3.  What is IPS? An Intrusion Prevention System that can detect and
+    block malicious traffic.
+
+4.  What is a Snort Rule? A signature used to detect specific network
+    traffic.
+
+5.  What is SID? Signature ID used to uniquely identify a Snort rule.
+
+6.  What does snort -T do? Validates the Snort configuration.
+
+7.  Why use local.rules? To create custom detection rules.
+
+==================================================== END OF NOTES

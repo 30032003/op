@@ -1,0 +1,103 @@
+NAGIOS LAB - STEP BY STEP COMMANDS (LSB)
+
+==================================================== LAB REQUIREMENTS
+==================================================== Server :
+Ubuntu/Linux with Nagios Core Client : Linux Host Packages: apache2,
+php, nagios4 (or Nagios Core), nagios-plugins, nrpe
+
+==================================================== STEP 1: UPDATE
+SYSTEM ==================================================== sudo apt
+update sudo apt upgrade -y
+
+==================================================== STEP 2: INSTALL
+NAGIOS (Ubuntu package method)
+==================================================== sudo apt install
+nagios4 nagios-plugins-contrib apache2 -y
+
+Verify: systemctl status nagios4 systemctl status apache2
+
+==================================================== STEP 3: START
+SERVICES ==================================================== sudo
+systemctl enable nagios4 sudo systemctl start nagios4
+
+sudo systemctl enable apache2 sudo systemctl start apache2
+
+==================================================== STEP 4: LOGIN TO
+WEB INTERFACE ====================================================
+Browser: http:///nagios4
+
+(Default authentication may be required depending on setup.)
+
+==================================================== STEP 5: INSTALL
+NRPE ON CLIENT ==================================================== sudo
+apt update sudo apt install nagios-nrpe-server nagios-plugins -y
+
+Enable: sudo systemctl enable nagios-nrpe-server sudo systemctl restart
+nagios-nrpe-server
+
+==================================================== STEP 6: ALLOW
+NAGIOS SERVER ==================================================== Edit:
+sudo nano /etc/nagios/nrpe.cfg
+
+Find: allowed_hosts=127.0.0.1
+
+Change to: allowed_hosts=127.0.0.1,
+
+Save: Ctrl+O Enter Ctrl+X
+
+Restart: sudo systemctl restart nagios-nrpe-server
+
+==================================================== STEP 7: CREATE HOST
+ON NAGIOS SERVER ====================================================
+sudo nano /etc/nagios4/conf.d/client.cfg
+
+Example:
+
+define host{ use linux-server host_name client1 alias Linux Client
+address }
+
+define service{ use generic-service host_name client1
+service_description PING check_command check_ping!100.0,20%!500.0,60% }
+
+Save file.
+
+==================================================== STEP 8: VERIFY
+CONFIGURATION ==================================================== sudo
+nagios4 -v /etc/nagios4/nagios.cfg
+
+If no errors: Things look okay.
+
+==================================================== STEP 9: RESTART
+NAGIOS ==================================================== sudo
+systemctl restart nagios4
+
+==================================================== STEP 10: CHECK WEB
+DASHBOARD ==================================================== Open:
+http:///nagios4
+
+Hosts -> client1
+
+Verify: Host Status = UP Service Status = OK
+
+==================================================== IMPORTANT COMMANDS
+==================================================== sudo apt update
+sudo apt install nagios4 sudo systemctl status nagios4 sudo systemctl
+restart nagios4 sudo systemctl restart apache2 sudo nano
+/etc/nagios4/conf.d/client.cfg sudo nano /etc/nagios/nrpe.cfg sudo
+nagios4 -v /etc/nagios4/nagios.cfg
+
+==================================================== VIVA QUESTIONS
+==================================================== 1. What is Nagios?
+Open-source infrastructure monitoring tool.
+
+2.  What is NRPE? Allows Nagios to execute checks on remote Linux hosts.
+
+3.  What is a Host? A monitored machine.
+
+4.  What is a Service? A monitored resource such as CPU, disk, memory,
+    ping.
+
+5.  Why verify configuration? To detect syntax errors before restarting
+    Nagios.
+
+==================================================== END
