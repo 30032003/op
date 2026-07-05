@@ -1,0 +1,91 @@
+SECURITY CONCEPTS - ASSIGNMENT 3 PRN: 260240123019 Name: Harshal
+Dahiwale
+
+========================================================= Q1. Deploy
+SonarQube and Scan a Vulnerable Repository
+=========================================================
+
+Objective: Deploy SonarQube using Docker and perform static code
+analysis on the DVWA (Damn Vulnerable Web Application) repository.
+
+========================================================= Step 1:
+Install Required Packages
+========================================================= sudo apt
+update sudo apt install docker.io docker-compose git python3-pip
+python3-venv -y
+
+Check Docker: docker –version
+
+========================================================= Step 2: Start
+Docker Service =========================================================
+sudo systemctl start docker sudo systemctl enable docker
+
+Verify: docker ps
+
+========================================================= Step 3: Run
+SonarQube Container
+========================================================= docker run -d
+–name sonarqube-custom
+–restart unless-stopped
+-p 9000:9000
+-e SONAR_ES_BOOTSTRAP_CHECKS_DISABLE=true
+sonarqube
+
+Check container: docker ps
+
+========================================================= Step 4: Open
+SonarQube ========================================================= Open
+browser: http://localhost:9000
+
+Default Login Username: admin Password: admin
+
+Change the password when prompted.
+
+========================================================= Step 5: Create
+Project ========================================================= 1.
+Click Create Local Project. 2. Enter Project Name. 3. Enter Project Key.
+4. Click Next. 5. Generate Token. 6. Save the generated token. 7. Choose
+“Locally”.
+
+========================================================= Step 6: Clone
+Vulnerable Repository
+========================================================= git clone
+https://github.com/digininja/DVWA.git
+
+cd DVWA
+
+========================================================= Step 7:
+Install SonarScanner
+========================================================= python3 -m
+venv venv
+
+source venv/bin/activate
+
+pip install pysonar
+
+(Or install SonarScanner CLI if available.)
+
+========================================================= Step 8: Run
+Sonar Scan =========================================================
+sonar-scanner
+-Dsonar.host.url=http://localhost:9000
+-Dsonar.login=
+-Dsonar.projectKey=assignment_3
+-Dsonar.sources=.
+
+========================================================= Step 9: Wait
+for Analysis =========================================================
+The scanner uploads the analysis report. Wait until: EXECUTION SUCCESS
+
+========================================================= Step 10: View
+Results =========================================================
+Refresh SonarQube Dashboard.
+
+Review: • Bugs • Vulnerabilities • Security Hotspots • Code Smells •
+Maintainability • Reliability • Coverage
+
+========================================================= Conclusion
+========================================================= Successfully
+deployed SonarQube using Docker, cloned the DVWA vulnerable repository,
+performed static code analysis using SonarScanner, and reviewed the
+detected security issues on the SonarQube dashboard.

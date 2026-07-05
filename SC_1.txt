@@ -1,0 +1,124 @@
+Security Concepts Assignment 1 - Nmap Lab Notes (Exam Ready)
+
+1. Install Nmap
+
+-   Ubuntu:
+
+    sudo apt update
+    sudo apt install nmap -y
+
+-   Check version:
+
+    nmap --version
+
+2. Basic Scan
+
+    nmap <target>
+
+Example:
+
+    nmap 15.207.152.55
+
+3. SYN Scan (Stealth Scan)
+
+    sudo nmap -sS <target>
+
+4. Service Version Detection
+
+    sudo nmap -sV <target>
+
+5. OS Detection
+
+    sudo nmap -O <target>
+
+6. Save Report
+
+    sudo nmap -sS -sV -O -oX report.xml <target>
+
+7. Convert to HTML (optional)
+
+    xsltproc report.xml -o report.html
+
+8. Understand Report
+
+-   Open = Service available
+-   Closed = Port reachable but no service
+-   Filtered = Firewall/ACL blocking scan
+-   Product = Running software
+-   Version = Software version
+-   OS Detection = Estimated operating system
+
+9. Assignment Targets
+
+1.  coindcx.com
+2.  winni.in
+3.  38.54.79.217
+4.  202.59.80.87
+
+10. Important Ports
+
+-   22 SSH
+-   80 HTTP
+-   443 HTTPS
+-   21 FTP
+-   25 SMTP
+-   53 DNS
+-   110 POP3
+-   143 IMAP
+-   3306 MySQL
+
+11. Commands for Viva
+
+    nmap <IP>
+    nmap -sS <IP>
+    nmap -sV <IP>
+    nmap -O <IP>
+    nmap -A <IP>
+    nmap -Pn <IP>
+    nmap -p 80,443 <IP>
+    nmap -oX report.xml <IP>
+
+12. Findings from Your Report
+
+-   CoinDCX:
+    -   HTTP/HTTPS ports open.
+    -   Several HTTP proxy ports detected.
+    -   Most ports filtered.
+-   Winni:
+    -   Port 80 and 443 open.
+    -   nginx server detected.
+    -   OS detection suggests Ubuntu.
+-   Other IPs:
+    -   Majority of ports filtered.
+    -   Multiple possible OS matches due to limited responses.
+
+13. Viva Questions
+
+Q. What is Nmap? Ans: Network Mapper used for network discovery and
+security auditing.
+
+Q. Difference between Open and Filtered? Ans: Open means service is
+available. Filtered means firewall blocks probes.
+
+Q. What does -sS do? Ans: TCP SYN (half-open) scan.
+
+Q. What does -sV do? Ans: Detects service versions.
+
+Q. What does -O do? Ans: Detects operating system.
+
+Q. Why save report? Ans: Documentation and analysis.
+
+14. Lab Procedure
+
+1.  Start Ubuntu.
+2.  Install Nmap.
+3.  Verify installation.
+4.  Run scan.
+5.  Run service detection.
+6.  Run OS detection.
+7.  Save XML report.
+8.  Open HTML report.
+9.  Analyze ports.
+10. Write observations.
+
+Best of luck for your lab exam!

