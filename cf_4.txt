@@ -1,0 +1,178 @@
+```text
+CYBER FORENSICS PRACTICAL – Q4 SOLUTION
+
+Aim:
+Recover the file "secret.txt" from the disk image (me_dheeraj.img) using Linux or FTK Imager.
+
+Requirements:
+- Linux (Ubuntu/Kali/CentOS)
+OR
+- FTK Imager (Windows)
+
+Evidence:
+me_dheeraj.img
+
+------------------------------------------------------------
+METHOD 1: USING LINUX
+------------------------------------------------------------
+
+STEP 1: Open Terminal
+
+Go to the folder containing the image.
+
+Example:
+
+cd ~/Downloads
+
+------------------------------------------------------------
+STEP 2: Identify the File System
+
+Command:
+
+file me_dheeraj.img
+
+Example Output:
+
+FAT16
+FAT32
+NTFS
+EXT4
+
+------------------------------------------------------------
+STEP 3: View Partition Information (Optional)
+
+Command:
+
+fdisk -l me_dheeraj.img
+
+------------------------------------------------------------
+STEP 4: Create Mount Directory
+
+Command:
+
+sudo mkdir /mnt/image
+
+------------------------------------------------------------
+STEP 5: Mount the Image
+
+Command:
+
+sudo mount -o loop me_dheeraj.img /mnt/image
+
+If no error appears, the image is mounted successfully.
+
+------------------------------------------------------------
+STEP 6: Verify Mounted Files
+
+Command:
+
+ls -la /mnt/image
+
+------------------------------------------------------------
+STEP 7: Search for secret.txt
+
+Command:
+
+find /mnt/image -name "secret.txt"
+
+or
+
+find /mnt/image -iname "*.txt"
+
+------------------------------------------------------------
+STEP 8: Read the Secret File
+
+Command:
+
+cat /mnt/image/secret.txt
+
+If the file is in another folder:
+
+cat /mnt/image/<folder_name>/secret.txt
+
+The contents displayed are the required answer.
+
+------------------------------------------------------------
+STEP 9: Copy the File (Optional)
+
+Command:
+
+cp /mnt/image/secret.txt ~/Desktop/
+
+------------------------------------------------------------
+STEP 10: Unmount the Image
+
+Command:
+
+sudo umount /mnt/image
+
+------------------------------------------------------------
+METHOD 2: USING FTK IMAGER (WINDOWS)
+------------------------------------------------------------
+
+1. Open FTK Imager.
+2. Click File → Add Evidence Item.
+3. Select Image File.
+4. Open me_dheeraj.img.
+5. Browse all folders.
+6. Locate secret.txt.
+7. Right Click → Export Files.
+8. Save the file.
+9. Open it using Notepad.
+10. Read the contents.
+
+------------------------------------------------------------
+METHOD 3: USING AUTOPSY
+------------------------------------------------------------
+
+1. Open Autopsy.
+2. Create New Case.
+3. Add Data Source.
+4. Select Disk Image or VM File.
+5. Choose me_dheeraj.img.
+6. Finish processing.
+7. Browse File Views.
+8. Locate secret.txt.
+9. Open the file.
+10. Record its contents.
+
+------------------------------------------------------------
+FINAL SUBMISSION
+------------------------------------------------------------
+
+1. Recovered file:
+secret.txt
+
+2. Contents of secret.txt
+
+------------------------------------------------------------
+IMPORTANT COMMANDS
+------------------------------------------------------------
+
+file me_dheeraj.img
+
+fdisk -l me_dheeraj.img
+
+sudo mkdir /mnt/image
+
+sudo mount -o loop me_dheeraj.img /mnt/image
+
+ls -la /mnt/image
+
+find /mnt/image -name "secret.txt"
+
+cat /mnt/image/secret.txt
+
+cp /mnt/image/secret.txt ~/Desktop/
+
+sudo umount /mnt/image
+
+------------------------------------------------------------
+EXPECTED RESULT
+------------------------------------------------------------
+
+1. Successfully mounted the disk image.
+2. Located the secret.txt file.
+3. Recovered and read the contents of secret.txt.
+4. Submitted the recovered file and its contents.
+```

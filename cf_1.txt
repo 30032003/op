@@ -1,0 +1,174 @@
+CYBER FORENSICS PRACTICAL – Q1 SOLUTION
+
+Aim:
+Recover the important text file from the forensic image (Forensic_Practical.E01) and find the 18-digit bank account number.
+
+Requirements:
+- FTK Imager
+- (Optional) Autopsy
+
+------------------------------------------------------------
+STEP 1: Open the Image
+------------------------------------------------------------
+
+1. Open FTK Imager.
+2. Click File → Add Evidence Item.
+3. Select Image File.
+4. Browse and select Forensic_Practical.E01.
+5. Click Finish.
+
+------------------------------------------------------------
+STEP 2: Examine the Partitions
+------------------------------------------------------------
+
+Expand:
+
+Forensic_Practical.E01
+|
+|-- Partition 1 (200 MB)
+|-- Partition 2 (3628 MB)
+|-- Unallocated Space
+
+Check every partition carefully.
+
+------------------------------------------------------------
+STEP 3: Browse the Files
+------------------------------------------------------------
+
+Look inside all folders.
+
+Especially check:
+
+Documents
+Desktop
+Downloads
+Users
+Text Files
+Deleted Files
+.Trashes
+Unallocated Space
+
+------------------------------------------------------------
+STEP 4: Recover Deleted Files
+------------------------------------------------------------
+
+If any deleted file is found:
+
+Right Click
+→ Export Files
+
+Save the recovered file.
+
+------------------------------------------------------------
+STEP 5: Search for Text Files
+------------------------------------------------------------
+
+Look for files having extensions:
+
+.txt
+.doc
+.docx
+.csv
+
+Also check files without extension.
+
+------------------------------------------------------------
+STEP 6: Check File Contents
+------------------------------------------------------------
+
+Open every recovered text file.
+
+Look for an 18-digit bank account number.
+
+Example:
+
+123456789012345678
+
+This is the answer to be submitted.
+
+------------------------------------------------------------
+STEP 7: Use Hex View (If File Doesn't Open)
+------------------------------------------------------------
+
+Select the file.
+
+Click Hex View or Text View.
+
+Search manually for readable text such as:
+
+Account
+Bank
+Supplier
+Payment
+
+Find the 18-digit number.
+
+------------------------------------------------------------
+STEP 8: Check Unallocated Space
+------------------------------------------------------------
+
+Expand:
+
+Unallocated Space
+
+Look for deleted or carved files.
+
+Recover them if present.
+
+------------------------------------------------------------
+STEP 9: Export the File
+------------------------------------------------------------
+
+Right Click
+
+Export Files
+
+Save the recovered text file.
+
+------------------------------------------------------------
+STEP 10: If FTK Does Not Show the File
+------------------------------------------------------------
+
+Open Autopsy.
+
+Create New Case.
+
+Add Data Source.
+
+Select:
+Disk Image or VM File
+
+Choose:
+Forensic_Practical.E01
+
+Do NOT choose Logical File Set.
+
+Check:
+
+Deleted Files
+File Types
+Keyword Search
+
+Search keywords:
+
+account
+bank
+payment
+supplier
+
+Also search for any 18-digit number.
+
+------------------------------------------------------------
+FINAL SUBMISSION
+------------------------------------------------------------
+
+1. The recovered text file.
+2. The 18-digit account number found in the file.
+
+------------------------------------------------------------
+EXPECTED RESULT
+------------------------------------------------------------
+
+Recovered the deleted/corrupted text file successfully.
+
+Extracted the required 18-digit account number from the recovered file.

@@ -1,0 +1,200 @@
+```text
+CYBER FORENSICS PRACTICAL – Q3 SOLUTION
+
+Aim:
+Analyze the disk image (image1.img), identify the file system, mount the image using a loop device, and recover the secret.txt file.
+
+Requirements:
+- Linux (Ubuntu/Kali/CentOS)
+OR
+- FTK Imager (Windows)
+
+Evidence:
+image1.img
+
+------------------------------------------------------------
+PART A: Identify the File Type (10 Marks)
+------------------------------------------------------------
+
+STEP 1: Open Terminal
+
+Go to the directory containing image1.img.
+
+Example:
+
+cd ~/Downloads
+
+------------------------------------------------------------
+STEP 2: Identify the File Type
+
+Command:
+
+file image1.img
+
+Example Output:
+
+DOS/MBR boot sector
+
+or
+
+FAT16
+
+or
+
+FAT32
+
+or
+
+NTFS
+
+or
+
+Linux ext4 filesystem
+
+Record the detected file system.
+
+------------------------------------------------------------
+STEP 3: Display Partition Information (Optional)
+
+Command:
+
+fdisk -l image1.img
+
+Purpose:
+Displays partition details such as start sector, size, and type.
+
+------------------------------------------------------------
+PART B: Mount the Image Using Loop Device (10 Marks)
+------------------------------------------------------------
+
+STEP 1: Create a Mount Directory
+
+Command:
+
+sudo mkdir /mnt/image
+
+------------------------------------------------------------
+STEP 2: Mount the Image
+
+Command:
+
+sudo mount -o loop image1.img /mnt/image
+
+If mounted successfully, no error message will appear.
+
+------------------------------------------------------------
+STEP 3: Verify the Mount
+
+Command:
+
+df -h
+
+or
+
+mount
+
+Check that image1.img is mounted.
+
+------------------------------------------------------------
+STEP 4: Open the Mounted Directory
+
+Command:
+
+cd /mnt/image
+
+List all files:
+
+ls -la
+
+------------------------------------------------------------
+STEP 5: Locate the Secret File
+
+Command:
+
+find /mnt/image -name "secret.txt"
+
+or
+
+find /mnt/image -iname "*.txt"
+
+------------------------------------------------------------
+STEP 6: Display the Secret
+
+Command:
+
+cat /mnt/image/path/to/secret.txt
+
+Example:
+
+cat /mnt/image/secret.txt
+
+The contents of secret.txt are the required answer.
+
+------------------------------------------------------------
+STEP 7: Copy the File (Optional)
+
+Command:
+
+cp /mnt/image/secret.txt ~/Desktop/
+
+------------------------------------------------------------
+STEP 8: Unmount the Image
+
+Command:
+
+sudo umount /mnt/image
+
+------------------------------------------------------------
+WINDOWS METHOD (FTK Imager)
+------------------------------------------------------------
+
+1. Open FTK Imager.
+2. File → Add Evidence Item.
+3. Select Image File.
+4. Open image1.img.
+5. Browse the folders.
+6. Locate secret.txt.
+7. Right Click → Export Files.
+8. Open the exported file in Notepad.
+9. Read the secret information.
+
+------------------------------------------------------------
+FINAL SUBMISSION
+------------------------------------------------------------
+
+a) File System Type:
+(FAT16 / FAT32 / NTFS / EXT4 as identified)
+
+b) Contents of secret.txt
+
+------------------------------------------------------------
+IMPORTANT COMMANDS
+------------------------------------------------------------
+
+file image1.img
+
+fdisk -l image1.img
+
+sudo mkdir /mnt/image
+
+sudo mount -o loop image1.img /mnt/image
+
+ls -la
+
+find /mnt/image -name "secret.txt"
+
+cat /mnt/image/secret.txt
+
+cp /mnt/image/secret.txt ~/Desktop/
+
+sudo umount /mnt/image
+
+------------------------------------------------------------
+EXPECTED RESULT
+------------------------------------------------------------
+
+1. Successfully identified the file system.
+2. Mounted the disk image using a loop device.
+3. Located the secret.txt file.
+4. Retrieved the secret information from the file.
+```

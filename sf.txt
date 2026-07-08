@@ -1,0 +1,92 @@
+====
+FTK Imager
+Autopsy (optional)
+Volatility3
+--
+Important Linux Commands:
+``````````````````````````
+file image.img
+fdisk -l image.img
+mkdir /mnt/image
+mount -o loop image.img /mnt/image
+ls
+pwd
+cd
+find
+cat
+strings
+hexdump -C
+xxd
+umount
+
+
+----------
+Important FTK Operations:
+``````````````````````````
+Add Evidence
+Export File
+Recover Deleted
+Hex View
+Properties
+Verify Hash
+Image Mounting
+
+
+---
+Important Autopsy Operations:
+`````````````````````````````
+
+Create Case
+Add Image
+Keyword Search
+Deleted Files
+Extract File
+Hash Search
+
+
+-----
+1. 
+Forensic_Practical.E01
+
+File
+→ Add Evidence Item
+→ Image File
+→ Select E01
+
+Look for:
+Documents
+Text Files
+Deleted Files
+Lost Files
+Recycle Bin
+
+Right Click
+Export Files
+
+Recover Deleted Files
+export manually.
+
+Important FTK Features
+Use these during exam
+Properties
+Hex View
+File List
+Deleted Files
+Export Files
+File Header
+
+
+-------
+
+Volatility Commands
+windows.info
+windows.pslist
+windows.psscan
+windows.cmdline
+windows.envars
+windows.filescan
+
+
+---
+Mount Image:
+Windows: FTK good or Autopsy

@@ -1,0 +1,165 @@
+```text
+CYBER FORENSICS PRACTICAL – Q2 SOLUTION
+
+Aim:
+Analyze the memory dump and identify the Python script that was running at the time of the system crash.
+
+Requirements:
+- Volatility 3
+- Python 3
+
+Memory Dump:
+memory.raw (or the given memory dump file)
+
+------------------------------------------------------------
+STEP 1: Open Command Prompt / Terminal
+------------------------------------------------------------
+
+Go to the Volatility3 folder.
+
+Example:
+
+cd C:\volatility3
+
+------------------------------------------------------------
+STEP 2: Verify the Memory Dump
+------------------------------------------------------------
+
+Command:
+
+python vol.py -f memory.raw windows.info
+
+Purpose:
+Displays OS information and verifies that the memory dump is valid.
+
+------------------------------------------------------------
+STEP 3: List Running Processes
+------------------------------------------------------------
+
+Command:
+
+python vol.py -f memory.raw windows.pslist
+
+Purpose:
+Lists all running processes.
+
+Look for:
+
+python.exe
+python3.exe
+pythonw.exe
+
+Note the PID of the Python process.
+
+------------------------------------------------------------
+STEP 4: Scan Hidden/Terminated Processes
+------------------------------------------------------------
+
+Command:
+
+python vol.py -f memory.raw windows.psscan
+
+Purpose:
+Finds hidden or terminated processes that may not appear in pslist.
+
+------------------------------------------------------------
+STEP 5: Display Command Line Arguments
+------------------------------------------------------------
+
+Command:
+
+python vol.py -f memory.raw windows.cmdline
+
+Purpose:
+Shows the full command used to start each process.
+
+Example Output:
+
+python.exe invoice.py
+
+or
+
+python.exe malware.py
+
+or
+
+python.exe backup.py
+
+The script name after python.exe is the required answer.
+
+------------------------------------------------------------
+STEP 6: If cmdline Does Not Show the Script
+------------------------------------------------------------
+
+Run:
+
+python vol.py -f memory.raw windows.envars
+
+Purpose:
+Displays environment variables that may contain the working directory or script path.
+
+------------------------------------------------------------
+STEP 7: Search for Python Files
+------------------------------------------------------------
+
+Command:
+
+python vol.py -f memory.raw windows.filescan
+
+Purpose:
+Searches for files loaded in memory.
+
+Look for:
+
+*.py
+
+------------------------------------------------------------
+STEP 8: Verify the Script
+------------------------------------------------------------
+
+If the output shows:
+
+python.exe C:\Users\Admin\Desktop\invoice.py
+
+Then the answer is:
+
+invoice.py
+
+------------------------------------------------------------
+FINAL SUBMISSION
+------------------------------------------------------------
+
+Name of the Python Script:
+
+Example:
+
+invoice.py
+
+(Replace with the actual script name found in the memory dump.)
+
+------------------------------------------------------------
+IMPORTANT VOLATILITY COMMANDS
+------------------------------------------------------------
+
+python vol.py -f memory.raw windows.info
+
+python vol.py -f memory.raw windows.pslist
+
+python vol.py -f memory.raw windows.psscan
+
+python vol.py -f memory.raw windows.cmdline
+
+python vol.py -f memory.raw windows.envars
+
+python vol.py -f memory.raw windows.filescan
+
+------------------------------------------------------------
+EXPECTED RESULT
+------------------------------------------------------------
+
+Successfully identified the Python process.
+
+Recovered the exact Python script name executed before the system crash.
+
+Submitted the script name as the final answer.
+```
